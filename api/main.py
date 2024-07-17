@@ -9,6 +9,11 @@ class NumbersInput(BaseModel):
 
 app = FastAPI()
 
+def getModel(modelName:str):
+    path=""
+    with open(path,"rb") as file:
+        model=pickle.load(file)
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -20,5 +25,5 @@ async def items(item_id:int):
 @app.post("/models/rfc")
 async def rfc_data(data:NumbersInput= Body(...)):
     numbers = data.numbers
-    processed_numbers = [num * 2 for num in numbers]
-    return {"processed_numbers": processed_numbers}
+    prediction = 
+    return {"processed_numbers": prediction}
