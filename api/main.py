@@ -9,11 +9,6 @@ app = FastAPI()
 def preprocess(input_data):
     ...
     
-def predict(modelName,array):
-    model=getModel(modelName)
-    preprocessed=preprocess(data)
-    prediction = model.predict(preprocessed)
-    
 class InputData(BaseModel):
     data: List[Union[float, int,str]]
 
@@ -27,6 +22,11 @@ def getModel(modelName:str):
     with open(path,"rb") as file:
         model=pickle.load(file)
     return model
+
+def predict(modelName,array):
+    model=getModel(modelName)
+    preprocessed=preprocess(data)
+    prediction = model.predict(preprocessed)
 
 @app.get("/")
 async def root():
