@@ -42,7 +42,7 @@ async def rfc_data(input_data:NumbersInput= Body(...)):
     prediction=predict("rfc",data)
     return {"processed_numbers": prediction}
     
-@app.post("/models/sv")
+@app.post("/models/svc")
 async def svc_data(input_data:NumbersInput= Body(...)):
     data = input_data.data
     prediction=predict("svc",data)
