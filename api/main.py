@@ -1,16 +1,23 @@
 from fastapi import FastAPI,Body
 from typing import List, Union
 from pydantic import BaseModel
-
+import pickle
+import numpy as np
+import os
 app = FastAPI()
 
-class NumbersInput(BaseModel):
-    numbers: List[Union[float, int]]
+def preprocess(input_data):
+    ...
+    
+class InputData(BaseModel):
+    data: List[Union[float, int,str]]
 
 app = FastAPI()
 
 def getModel(modelName:str):
-    path=""
+    current=os.getcwd()
+    root=os.path.dirname(current)
+    path=os.path.join(root,current,filename)
     with open(path,"rb") as file:
         model=pickle.load(file)
 
@@ -23,7 +30,8 @@ async def items(item_id:int):
     return {"message": item_id}
 
 @app.post("/models/rfc")
-async def rfc_data(data:NumbersInput= Body(...)):
-    numbers = data.numbers
-    prediction = 
+async def rfc_data(input_data:NumbersInput= Body(...)):
+    data = input_data.data
+    preprocessed=preprocess(data)
+    prediction = model.predict(preprocessed)
     return {"processed_numbers": prediction}
