@@ -23,7 +23,8 @@ def getModel(modelName:str):
         model=pickle.load(file)
     return model
 
-def predict(modelName,array):
+def predict(modelName,arr):
+    array=np.array(arr).reshape(-1,1)
     model=getModel(modelName)
     preprocessed=preprocess(data)
     prediction = model.predict(preprocessed)
