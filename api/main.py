@@ -41,3 +41,27 @@ async def rfc_data(input_data:NumbersInput= Body(...)):
     data = input_data.data
     prediction=predict("rfc",data)
     return {"processed_numbers": prediction}
+    
+@app.post("/models/sv")
+async def svc_data(input_data:NumbersInput= Body(...)):
+    data = input_data.data
+    prediction=predict("svc",data)
+    return {"processed_numbers": prediction}
+    
+@app.post("/models/bnb")
+async def bnb_data(input_data:NumbersInput= Body(...)):
+    data = input_data.data
+    prediction=predict("bnb",data)
+    return {"processed_numbers": prediction}
+    
+@app.post("/models/xgb")
+async def xgb_data(input_data:NumbersInput= Body(...)):
+    data = input_data.data
+    prediction=predict("xgb",data)
+    return {"processed_numbers": prediction}
+    
+@app.post("/models/lr")
+async def lr_data(input_data:NumbersInput= Body(...)):
+    data = input_data.data
+    prediction=predict("lr",data)
+    return {"processed_numbers": prediction}
