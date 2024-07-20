@@ -40,6 +40,8 @@ def preprocess(arr,scaler,encoders,):
     for key in encoders:
         if isinstance(key,int):
             encoder=encoders[key]
+            arr=np.array(arr.data)
+            print(arr)
             arr[key]=encoder.transform([arr[key]])[0]
     scaled=scaler.transform([arr])
     return scaled

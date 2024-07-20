@@ -22,13 +22,10 @@ class NumbersInput(BaseModel):
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
-@app.get("/items/{item_id}")
-async def items(item_id:int):
-    return {"message": item_id}
+@app.get("/ExampleData")
+async def Example():
+    return {"sample": ['female', 'USD', True, 'Teacher', 'Beitbridge', 39000.0, 0,48653.01147325887, 0.22, 37, '47', 3230.038868649578, 'married']}
 
 @app.post("/models/rfc")
 async def rfc_data(sample:NumbersInput= Body(...)):
