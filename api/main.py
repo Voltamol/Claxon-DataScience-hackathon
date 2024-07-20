@@ -1,33 +1,26 @@
 from fastapi import FastAPI,Body
 from typing import List, Union
 from pydantic import BaseModel
-import pickle
-import numpy as np
-import os
+from utils import expected
+from utils import get_pickle
+from utils import preprocess
+from utils import predict
 app = FastAPI()
 
-def preprocess(input_data):
-    ...
-    
-class InputData(BaseModel):
+objs=get_pickle()
+scaler=objs['scaler']
+encoders=objs['encoders']
+bnb=objs['bnb']
+gnb=objs['gnb']
+svc=objs['svc']
+rfc=objs['rfc']
+lr=objs['lr']
+target_encoder=encoders['target']
+
+class NumbersInput(BaseModel):
     data: List[Union[float, int,str]]
 
 app = FastAPI()
-
-def getModel(modelName:str):
-    current=os.getcwd()
-    root=os.path.dirname(current)
-    filename=f"{modelName}.pickle"
-    path=os.path.join(root,current,filename)
-    with open(path,"rb") as file:
-        model=pickle.load(file)
-    return model
-
-def predict(modelName,arr):
-    array=np.array(arr).reshape(-1,1)
-    model=getModel(modelName)
-    preprocessed=preprocess(data)
-    prediction = model.predict(preprocessed)
 
 @app.get("/")
 async def root():
@@ -38,31 +31,32 @@ async def items(item_id:int):
     return {"message": item_id}
 
 @app.post("/models/rfc")
-async def rfc_data(input_data:NumbersInput= Body(...)):
-    data = input_data.data
-    prediction=predict("rfc",data)
+async def rfc_data(sample:NumbersInput= Body(...)):
+    scaled=preprocess(sample,scaler,encoders)
+    prediction=predict(scaled,rfc,target_encoder)
     return {"processed_numbers": prediction}
     
 @app.post("/models/svc")
-async def svc_data(input_data:NumbersInput= Body(...)):
-    data = input_data.data
-    prediction=predict("svc",data)
+async def svc_data(sample:NumbersInput= Body(...)):
+    scaled=preprocess(sample,scaler,encoders)
+    prediction=predict(scaled,rfc,target_encoder)
     return {"processed_numbers": prediction}
     
 @app.post("/models/bnb")
-async def bnb_data(input_data:NumbersInput= Body(...)):
-    data = input_data.data
-    prediction=predict("bnb",data)
+async def bnb_data(sample:NumbersInput= Body(...)):
+    scaled=preprocess(sample,scaler,encoders)
+    prediction=predict(scaled,bnb,target_encoder)
     return {"processed_numbers": prediction}
     
-@app.post("/models/xgb")
-async def xgb_data(input_data:NumbersInput= Body(...)):
-    data = input_data.data
-    prediction=predict("xgb",data)
+@app.post("/models/gnb")
+async def xgb_data(sample:NumbersInput= Body(...)):
+    scaled=preprocess(sample,scaler,encoders)
+    prediction=predict(scaled,gnb,target_encoder)
     return {"processed_numbers": prediction}
+    
     
 @app.post("/models/lr")
-async def lr_data(input_data:NumbersInput= Body(...)):
-    data = input_data.data
-    prediction=predict("lr",data)
+async def lr_data(sample:NumbersInput= Body(...)):
+    scaled=preprocess(sample,scaler,encoders)
+    prediction=predict(scaled,lr,target_encoder)
     return {"processed_numbers": prediction}
